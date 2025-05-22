@@ -68,14 +68,9 @@ export const ArticleParamsForm = ({
 					className={styles.form}
 					onSubmit={handleSubmit}
 					onReset={handleReset}>
-					<Text
-						children='ЗАДАЙТЕ ПАРАМЕТРЫ'
-						as='h2'
-						size={31}
-						weight={800}
-						uppercase
-						align='center'
-					/>
+					<Text as='h2' size={31} weight={800} uppercase align='center'>
+						{'ЗАДАЙТЕ ПАРАМЕТРЫ'}
+					</Text>
 					<Select
 						selected={formState.fontFamilyOption}
 						options={fontFamilyOptions}
