@@ -1,8 +1,8 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-
+import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Text } from 'src/ui/text';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
@@ -16,33 +16,24 @@ import {
 	fontSizeOptions,
 } from 'src/constants/articleProps';
 import { Separator } from 'src/ui/separator';
+import { useOutsideClickClose } from './hooks/useClickOutsideClose';
 
 type ArticleParamsFormProps = {
-	state: ArticleStateType;
 	onStateChange: (newState: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = ({
-	state,
 	onStateChange,
 }: ArticleParamsFormProps) => {
 	const [open, setOpen] = useState(false);
-	const [formState, setFormState] = useState<ArticleStateType>(state);
+	const [formState, setFormState] =
+		useState<ArticleStateType>(defaultArticleState);
 	const asideRef = useRef<HTMLElement>(null);
 
-	useEffect(() => {
-		const handleClickOutside = (e: MouseEvent) => {
-			if (asideRef.current && !asideRef.current.contains(e.target as Node)) {
-				setOpen(false);
-			}
-		};
-
-		if (open) {
-			document.addEventListener('mousedown', handleClickOutside);
-		}
-
-		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [open]);
+	useOutsideClickClose({
+		rootRef: asideRef,
+		onChange: setOpen,
+	});
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -58,12 +49,15 @@ export const ArticleParamsForm = ({
 		setOpen(!open);
 	};
 
+	const classNameAside = clsx({
+		[styles.container]: true,
+		[styles.container_open]: open,
+	});
+
 	return (
 		<>
 			<ArrowButton isOpen={open} onClick={toggleForm} />
-			<aside
-				className={styles.container + ' ' + (open ? styles.container_open : '')}
-				ref={asideRef}>
+			<aside className={clsx(classNameAside)} ref={asideRef}>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
