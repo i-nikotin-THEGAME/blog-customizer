@@ -57,7 +57,7 @@ export const ArticleParamsForm = ({
 	return (
 		<>
 			<ArrowButton isOpen={open} onClick={toggleForm} />
-			<aside className={clsx(classNameAside)} ref={asideRef}>
+			<aside className={classNameAside} ref={asideRef}>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
